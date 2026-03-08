@@ -32,6 +32,7 @@ export default function App() {
       <Button
       buttonClick={()=> {setLang(lang==='fr'?'en':'fr')}}
       buttonStyle={{ 
+        color: 'black',
         position: 'absolute',
         top: '20px',        
         right: '20px',
@@ -49,9 +50,10 @@ export default function App() {
       }}
       buttonContent={lang==='fr'?'Change to EN':'Passer en FR'}
       />
-      <h1 style={{cursor: 'default', backgroundColor: "white", padding: "10px", borderRadius: "12px", border: "2px solid black"}}>{gameName}</h1>
+      <h1 style={{color: 'black', cursor: 'default', backgroundColor: "white", padding: "10px", borderRadius: "12px", border: "2px solid black"}}>{gameName}</h1>
       <h3 style={{color: !winner ? 'black' : winner==='X'?'hsl(0,100%,30%)':'hsl(240,50%,30%)', cursor: 'default', backgroundColor: "white", padding: "10px", borderRadius: "12px", border: "2px solid black"}} >{status}</h3>
       <div style={{ 
+        color: 'black',
         display: 'flex', 
         flexDirection: 'column',
         alignItems: 'center', 
@@ -64,7 +66,7 @@ export default function App() {
         }}>
           <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 100px)', gap: '5px' }}>
             {squares.map((sq, i) => (
-              <button key={i} onClick={() => handleClick(i)} style={{ cursor: winner?"default":"pointer", height: '100px', fontSize: '24px', border: "2px solid black", color: sq==='X'?'hsl(0,100%,30%)':'hsl(240,50%,30%)' }}>
+              <button key={i} onClick={() => handleClick(i)} style={{ backgroundColor:'gray', cursor: winner?'default':'pointer', height: '100px', fontSize: '24px', border: "2px solid black", color: sq==='X'?'hsl(0,100%,30%)':'hsl(240,50%,30%)' }}>
                 {sq}
               </button>
             ))}

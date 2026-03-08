@@ -1,18 +1,19 @@
 import { useState } from 'react';
-import Button from './Button';
+import Button from './components/Button';
+import { langButtonStyle, cellGridStyle, gameContainerStyle, gameNameStyle, gameStatusStyle, gridContainerStyle, gridStyle, resetButtonStyle } from './components/gameStyle';
 
 export default function App() {
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [xIsNext, setXIsNext] = useState(true);
   const [count, setCount] = useState(0);
   const [lang, setLang] = useState('en');
-  const text = [
-    {'fr': 'MORPION', 'en': 'TIC-TAC TOE'},
-    {'fr': 'VAINQUEUR', 'en': 'WINNER'},
-    {'fr': 'MATCH NUL', 'en': 'DRAW'},
-    {'fr': 'JOUEUR SUIVANT', 'en': 'NEXT PLAYER'},
-    {'fr': 'RECOMMENCER', 'en': 'RESET'}
-  ];
+  const text = {
+    'name' : {'fr': 'MORPION', 'en': 'TIC-TAC TOE'},
+    'winner' : {'fr': 'VAINQUEUR', 'en': 'WINNER'},
+    'draw' : {'fr': 'MATCH NUL', 'en': 'DRAW'},
+    'next' : {'fr': 'JOUEUR SUIVANT', 'en': 'NEXT PLAYER'},
+    'reset' : {'fr': 'RECOMMENCER', 'en': 'RESET'}
+  };
 
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) return;
@@ -24,49 +25,22 @@ export default function App() {
   }
 
   const winner = calculateWinner(squares);
-  const status = winner ? `${text[1][lang]}: ${winner[0]}` :  ( count===9 ? `${text[2][lang]}` : `${text[3][lang]}: ${xIsNext ? 'X' : 'O'}`) ;
-  const gameName = `${text[0][lang]}`
+  const status = winner ? `${text['winner'][lang]}: ${winner[0]}` :  ( count===9 ? `${text['draw'][lang]}` : `${text['next'][lang]}: ${xIsNext ? 'X' : 'O'}`) ;
+  const gameName = `${text['name'][lang]}`
 
   return (
-    <div style={{position: 'relative', display: 'flex', width: '100vw', minHeight: '100vh', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: 'sans-serif', backgroundImage: `url('/tictactoe.png')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <div style={gameContainerStyle}>
       <Button
       buttonClick={()=> {setLang(lang==='fr'?'en':'fr')}}
-      buttonStyle={{ 
-        color: 'black',
-        position: 'absolute',
-        top: '20px',        
-        right: '20px',
-        paddingRight: '20px',
-        paddingLeft: '20px',
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center',
-        backgroundColor: "white",
-        borderRadius: '12px',
-        border: '2px solid black',
-        cursor: 'pointer',
-        userSelect: 'none',
-        transition: 'all 0.2s'
-      }}
+      buttonStyle={langButtonStyle}
       buttonContent={lang==='fr'?'CHANGE TO EN':'PASSER EN FR'}
       />
-      <h1 style={{color: 'black', cursor: 'default', backgroundColor: "white", padding: "10px", borderRadius: "12px", border: "2px solid black"}}>{gameName}</h1>
-      <h3 style={{color: !winner ? 'black' : winner[0]==='X'?'hsl(0,100%,30%)':'hsl(240,50%,30%)', cursor: 'default', backgroundColor: "white", padding: "10px", borderRadius: "12px", border: "2px solid black"}} >{status}</h3>
-      <div style={{ 
-        color: 'black',
-        display: 'flex', 
-        flexDirection: 'column',
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        gap: '30px',
-        backgroundColor: 'rgba(255,255,255,0.8)',
-        border: "2px solid black",
-        borderRadius: '12px',
-        padding: '10px'
-        }}>
-          <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 100px)', gap: '5px' }}>
+      <h1 style={gameNameStyle}>{gameName}</h1>
+      <h3 style={gameStatusStyle(winner)} >{status}</h3>
+      <div style={gridContainerStyle}>
+          <div style={gridStyle}>
             {squares.map((sq, i) => (
-              <button key={i} onClick={() => handleClick(i)} style={{ backgroundColor: (winner && (winner.includes(i)))? (winner[0]==='X'?'hsl(0,20%,30%)':'hsl(240,10%,30%)'):'gray'  , cursor: winner?'default':'pointer', height: '100px', fontSize: '24px', border: "2px solid black", color: sq==='X'?'hsl(0,100%,30%)':'hsl(240,50%,30%)' }}>
+              <button key={i} onClick={() => handleClick(i)} style={cellGridStyle({winner,sq,i})}>
                 {sq}
               </button>
             ))}
@@ -76,22 +50,8 @@ export default function App() {
                 setSquares(Array(9).fill(null));
                 setXIsNext(true);
                 setCount(0)}}
-          buttonStyle={{ 
-            paddingRight: '20px',
-            paddingLeft: '20px',
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            backgroundColor: "white",
-            borderRadius: '12px',
-            border: '2px solid black',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            fontSize: '24px',
-            userSelect: 'none',
-            transition: 'all 0.2s'
-          }}
-          buttonContent={text[4][lang]} />
+          buttonStyle={resetButtonStyle}
+          buttonContent={text['reset'][lang]} />
       </div>
     </div>
   );

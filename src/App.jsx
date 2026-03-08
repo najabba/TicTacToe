@@ -7,11 +7,11 @@ export default function App() {
   const [count, setCount] = useState(0);
   const [lang, setLang] = useState('en');
   const text = [
-    {'fr': 'Morpion', 'en': 'Tic-Tac Toe'},
-    {'fr': 'Vainqueur', 'en': 'Winner'},
-    {'fr': 'Match Nul', 'en': 'Draw'},
-    {'fr': 'Joueur Suivant', 'en': 'Next Player'},
-    {'fr': 'Recommencer', 'en': 'Reset'}
+    {'fr': 'MORPION', 'en': 'TIC-TAC TOE'},
+    {'fr': 'VAINQUEUR', 'en': 'WINNER'},
+    {'fr': 'MATCH NUL', 'en': 'DRAW'},
+    {'fr': 'JOUEUR SUIVANT', 'en': 'NEXT PLAYER'},
+    {'fr': 'RECOMMENCER', 'en': 'RESET'}
   ];
 
   function handleClick(i) {
@@ -24,7 +24,7 @@ export default function App() {
   }
 
   const winner = calculateWinner(squares);
-  const status = winner ? `${text[1][lang]}: ${winner}` :  ( count===9 ? `${text[2][lang]}` : `${text[3][lang]}: ${xIsNext ? 'X' : 'O'}`) ;
+  const status = winner ? `${text[1][lang]}: ${winner[0]}` :  ( count===9 ? `${text[2][lang]}` : `${text[3][lang]}: ${xIsNext ? 'X' : 'O'}`) ;
   const gameName = `${text[0][lang]}`
 
   return (
@@ -48,10 +48,10 @@ export default function App() {
         userSelect: 'none',
         transition: 'all 0.2s'
       }}
-      buttonContent={lang==='fr'?'Change to EN':'Passer en FR'}
+      buttonContent={lang==='fr'?'CHANGE TO EN':'PASSER EN FR'}
       />
       <h1 style={{color: 'black', cursor: 'default', backgroundColor: "white", padding: "10px", borderRadius: "12px", border: "2px solid black"}}>{gameName}</h1>
-      <h3 style={{color: !winner ? 'black' : winner==='X'?'hsl(0,100%,30%)':'hsl(240,50%,30%)', cursor: 'default', backgroundColor: "white", padding: "10px", borderRadius: "12px", border: "2px solid black"}} >{status}</h3>
+      <h3 style={{color: !winner ? 'black' : winner[0]==='X'?'hsl(0,100%,30%)':'hsl(240,50%,30%)', cursor: 'default', backgroundColor: "white", padding: "10px", borderRadius: "12px", border: "2px solid black"}} >{status}</h3>
       <div style={{ 
         color: 'black',
         display: 'flex', 
@@ -66,7 +66,7 @@ export default function App() {
         }}>
           <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 100px)', gap: '5px' }}>
             {squares.map((sq, i) => (
-              <button key={i} onClick={() => handleClick(i)} style={{ backgroundColor:'gray', cursor: winner?'default':'pointer', height: '100px', fontSize: '24px', border: "2px solid black", color: sq==='X'?'hsl(0,100%,30%)':'hsl(240,50%,30%)' }}>
+              <button key={i} onClick={() => handleClick(i)} style={{ backgroundColor: (winner && (winner.includes(i)))? (winner[0]==='X'?'hsl(0,20%,30%)':'hsl(240,10%,30%)'):'gray'  , cursor: winner?'default':'pointer', height: '100px', fontSize: '24px', border: "2px solid black", color: sq==='X'?'hsl(0,100%,30%)':'hsl(240,50%,30%)' }}>
                 {sq}
               </button>
             ))}
@@ -100,7 +100,7 @@ export default function App() {
 function calculateWinner(squares) {
   const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
   for (let [a, b, c] of lines) {
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) return squares[a];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) return [squares[a],a,b,c];
   }
   return null;
 }

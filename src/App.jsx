@@ -28,7 +28,7 @@ export default function App() {
   const gameName = `${text[0][lang]}`
 
   return (
-    <div style={{position: 'relative', display: 'flex', width: '100vw', height: '100vw', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: 'sans-serif', backgroundImage: `url('/tictactoe.png')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <div style={{position: 'relative', display: 'flex', width: '100vw', minHeight: '100vh', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: 'sans-serif', backgroundImage: `url('/tictactoe.png')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
       <Button
       buttonClick={()=> {setLang(lang==='fr'?'en':'fr')}}
       buttonStyle={{ 

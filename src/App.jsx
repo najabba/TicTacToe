@@ -1,8 +1,18 @@
 import { useState } from 'react';
+import Button from './Button';
 
 export default function App() {
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [xIsNext, setXIsNext] = useState(true);
+  const [count, setCount] = useState(0);
+  const [lang, setLang] = useState('en');
+  const text = [
+    {'fr': 'Morpion', 'en': 'Tic-Tac Toe'},
+    {'fr': 'Vainqueur', 'en': 'Winner'},
+    {'fr': 'Match Nul', 'en': 'Draw'},
+    {'fr': 'Joueur Suivant', 'en': 'Next Player'},
+    {'fr': 'Recommencer', 'en': 'Reset'}
+  ];
 
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) return;
@@ -10,58 +20,76 @@ export default function App() {
     nextSquares[i] = xIsNext ? 'X' : 'O';
     setSquares(nextSquares);
     setXIsNext(!xIsNext);
+    setCount(count+1);
   }
 
   const winner = calculateWinner(squares);
-  const status = winner ? `Winner: ${winner}` : `Next player: ${xIsNext ? 'X' : 'O'}`;
-  const gameName = 'Tic-Tac Toe'
+  const status = winner ? `${text[1][lang]}: ${winner}` :  ( count===9 ? `${text[2][lang]}` : `${text[3][lang]}: ${xIsNext ? 'X' : 'O'}`) ;
+  const gameName = `${text[0][lang]}`
 
   return (
-
-
-    <div style={{ display: 'flex', width: '100vw', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: 'sans-serif' }}>
-      <h1>{gameName}</h1>
-      <h1>{status}</h1>
+    <div style={{position: 'relative', display: 'flex', width: '100vw', height: '100vw', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: 'sans-serif', backgroundImage: `url('/tictactoe.png')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <Button
+      buttonClick={()=> {setLang(lang==='fr'?'en':'fr')}}
+      buttonStyle={{ 
+        position: 'absolute',
+        top: '20px',        
+        right: '20px',
+        paddingRight: '20px',
+        paddingLeft: '20px',
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        backgroundColor: "white",
+        borderRadius: '12px',
+        border: '2px solid black',
+        cursor: 'pointer',
+        userSelect: 'none',
+        transition: 'all 0.2s'
+      }}
+      buttonContent={lang==='fr'?'Change to EN':'Passer en FR'}
+      />
+      <h1 style={{cursor: 'default', backgroundColor: "white", padding: "10px", borderRadius: "12px", border: "2px solid black"}}>{gameName}</h1>
+      <h3 style={{color: !winner ? 'black' : winner==='X'?'hsl(0,100%,30%)':'hsl(240,50%,30%)', cursor: 'default', backgroundColor: "white", padding: "10px", borderRadius: "12px", border: "2px solid black"}} >{status}</h3>
       <div style={{ 
         display: 'flex', 
         flexDirection: 'column',
         alignItems: 'center', 
         justifyContent: 'center', 
-        gap: '40px',
-        marginTop: '20px', 
-        marginBottom: '20px'
+        gap: '30px',
+        backgroundColor: 'rgba(255,255,255,0.8)',
+        border: "2px solid black",
+        borderRadius: '12px',
+        padding: '10px'
         }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 100px)', gap: '5px' }}>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 100px)', gap: '5px' }}>
             {squares.map((sq, i) => (
-              <button key={i} onClick={() => handleClick(i)} style={{ height: '100px', fontSize: '24px' }}>
+              <button key={i} onClick={() => handleClick(i)} style={{ cursor: winner?"default":"pointer", height: '100px', fontSize: '24px', border: "2px solid black", color: sq==='X'?'hsl(0,100%,30%)':'hsl(240,50%,30%)' }}>
                 {sq}
               </button>
             ))}
           </div>  
-          {
-            winner && (
-              <div 
-              onClick={() => {
+          <Button 
+          buttonClick={() => {
                 setSquares(Array(9).fill(null));
-                setXIsNext(true);}
-                } 
-                style={{ 
-                  paddingRight: '20px',
-                  paddingLeft: '20px',
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center',
-                  borderRadius: '12px',
-                  border: '2px solid black',
-                  cursor: 'pointer',
-                  userSelect: 'none',
-                  transition: 'all 0.2s'
-                }}
-              >
-                <h2> Reset </h2>
-              </div>
-            )
-          }
+                setXIsNext(true);
+                setCount(0)}}
+          buttonStyle={{ 
+            paddingRight: '20px',
+            paddingLeft: '20px',
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            backgroundColor: "white",
+            borderRadius: '12px',
+            border: '2px solid black',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            fontSize: '24px',
+            userSelect: 'none',
+            transition: 'all 0.2s'
+          }}
+          buttonContent={text[4][lang]} />
       </div>
     </div>
   );

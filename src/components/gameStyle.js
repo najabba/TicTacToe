@@ -12,13 +12,21 @@ export const gameContainerStyle = {
     backgroundPosition: 'center' 
 }
 
+export const gameNameContainerStyle = {
+    backgroundColor: 'rgba(255,255,255,0.8)',
+    cursor: 'default',
+    padding: "10px",
+    borderRadius: "12px"
+}
+
 export const gameNameStyle = {
-    color: 'black', 
-    cursor: 'default', 
-    backgroundColor: "white", 
-    padding: "10px", 
-    borderRadius: "12px", 
-    border: "2px solid black"
+    backgroundImage: 'linear-gradient(to right, hsl(0,100%,40%), hsl(240,50%,40%))',
+    backgroundClip: 'text',
+    color:'transparent',
+    cursor: 'default',
+    margin: 0,
+    fontSize: '3.2em',
+    fontWeight: 'bold'
 }
 
 export const gameStatusStyle = (winner) => ({
@@ -50,7 +58,7 @@ export const gridStyle = {
 }
 
 export const cellGridStyle = ({winner,sq,i})=>({
-    backgroundColor: (winner && (winner.includes(i)))? (winner[0]==='X'?'hsl(0,20%,30%)':'hsl(240,10%,30%)'):'gray',
+    backgroundColor: (winner && (winner.includes(i)))? (winner[0]==='X'?'hsl(0,30%,90%)':'hsl(240,50%,90%)'):'white',
     cursor: winner?'default':'pointer',
     height: '100px',
     fontSize: '24px',

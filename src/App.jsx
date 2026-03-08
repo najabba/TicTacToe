@@ -1,19 +1,13 @@
 import { useState } from 'react';
 import Button from './components/Button';
-import { langButtonStyle, cellGridStyle, gameContainerStyle, gameNameStyle, gameStatusStyle, gridContainerStyle, gridStyle, resetButtonStyle } from './components/gameStyle';
+import { langButtonStyle, cellGridStyle, gameContainerStyle, gameNameStyle, gameStatusStyle, gridContainerStyle, gridStyle, resetButtonStyle, gameNameContainerStyle } from './components/gameStyle';
+import { text } from './components/wordTrad';
 
 export default function App() {
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [xIsNext, setXIsNext] = useState(true);
   const [count, setCount] = useState(0);
   const [lang, setLang] = useState('en');
-  const text = {
-    'name' : {'fr': 'MORPION', 'en': 'TIC-TAC TOE'},
-    'winner' : {'fr': 'VAINQUEUR', 'en': 'WINNER'},
-    'draw' : {'fr': 'MATCH NUL', 'en': 'DRAW'},
-    'next' : {'fr': 'JOUEUR SUIVANT', 'en': 'NEXT PLAYER'},
-    'reset' : {'fr': 'RECOMMENCER', 'en': 'RESET'}
-  };
 
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) return;
@@ -35,7 +29,9 @@ export default function App() {
       buttonStyle={langButtonStyle}
       buttonContent={lang==='fr'?'CHANGE TO EN':'PASSER EN FR'}
       />
-      <h1 style={gameNameStyle}>{gameName}</h1>
+      <div style={gameNameContainerStyle}>
+        <h1 style={gameNameStyle}>{gameName}</h1>
+      </div>
       <h3 style={gameStatusStyle(winner)} >{status}</h3>
       <div style={gridContainerStyle}>
           <div style={gridStyle}>

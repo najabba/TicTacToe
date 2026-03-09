@@ -1,24 +1,14 @@
 import { useState } from 'react';
 import Button from './components/Button';
-import { langButtonStyle, cellGridStyle, gameContainerStyle, gameNameStyle, gameStatusStyle, gridContainerStyle, gridStyle, resetButtonStyle, gameNameContainerStyle } from './components/gameStyle';
+import { langButtonStyle, gameContainerStyle, gameNameStyle, gameStatusStyle, gridContainerStyle, resetButtonStyle, gameNameContainerStyle } from './components/gameStyle';
 import { text } from './components/wordTrad';
+import Grid from './components/Grid';
+import useGameLogic from './components/useGameLogic';
 
 export default function App() {
-  const [squares, setSquares] = useState(Array(9).fill(null));
-  const [xIsNext, setXIsNext] = useState(true);
-  const [count, setCount] = useState(0);
+  const { squares, xIsNext, count, winner, handleClick, resetGame } = useGameLogic();
   const [lang, setLang] = useState('en');
 
-  function handleClick(i) {
-    if (squares[i] || calculateWinner(squares)) return;
-    const nextSquares = squares.slice();
-    nextSquares[i] = xIsNext ? 'X' : 'O';
-    setSquares(nextSquares);
-    setXIsNext(!xIsNext);
-    setCount(count+1);
-  }
-
-  const winner = calculateWinner(squares);
   const status = winner ? `${text['winner'][lang]}: ${winner[0]}` :  ( count===9 ? `${text['draw'][lang]}` : `${text['next'][lang]}: ${xIsNext ? 'X' : 'O'}`) ;
   const gameName = `${text['name'][lang]}`
 
@@ -27,36 +17,19 @@ export default function App() {
       <Button
       buttonClick={()=> {setLang(lang==='fr'?'en':'fr')}}
       buttonStyle={langButtonStyle}
-      buttonContent={lang==='fr'?'CHANGE TO EN':'PASSER EN FR'}
+      buttonContent={lang==='fr'?'CHANGE LANGUAGE':'CHANGER LANGUE'}
       />
       <div style={gameNameContainerStyle}>
         <h1 style={gameNameStyle}>{gameName}</h1>
       </div>
       <h3 style={gameStatusStyle(winner)} >{status}</h3>
       <div style={gridContainerStyle}>
-          <div style={gridStyle}>
-            {squares.map((sq, i) => (
-              <button key={i} onClick={() => handleClick(i)} style={cellGridStyle({winner,sq,i})}>
-                {sq}
-              </button>
-            ))}
-          </div>  
+          <Grid squares={squares} click={handleClick} count={count} winner={winner} />
           <Button 
-          buttonClick={() => {
-                setSquares(Array(9).fill(null));
-                setXIsNext(true);
-                setCount(0)}}
+          buttonClick={()=>resetGame()}
           buttonStyle={resetButtonStyle}
           buttonContent={text['reset'][lang]} />
       </div>
     </div>
   );
-}
-
-function calculateWinner(squares) {
-  const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-  for (let [a, b, c] of lines) {
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) return [squares[a],a,b,c];
-  }
-  return null;
 }

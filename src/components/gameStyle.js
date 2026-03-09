@@ -25,7 +25,7 @@ export const gameNameStyle = {
     color:'transparent',
     cursor: 'default',
     margin: 0,
-    fontSize: '4em',
+    fontSize: '3.5em',
     fontWeight: 'bold'
 }
 
